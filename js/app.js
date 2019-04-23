@@ -14,14 +14,14 @@ class Enemy {
     // Multiply enemy movement on the x-axis by dt paramter
     this.x += this.speed * dt;
     // Reset enemey position if off canvas
-    if (this.x > 520) {
-      this.x = -50;
+    if (this.x > 505) {
+      this.x = -100;
     }
     // Check for collision between enemy and player
     if (player.x < this.x + 80 && player.x + 80 > this.x &&
         player.y < this.y + 30 && player.y + 30 > this.y) {
-          player.x = 202;
-          player.y = 405;
+          player.x = 200;
+          player.y = 400;
           alert("Try again!");
     }
   }
@@ -42,9 +42,23 @@ class Player {
   }
   // Update players position
   update(dt) {
+    // Multiply with dt-parameter
     this.x * dt;
     this.y * dt;
-    // If player reaches goal reset positon after delay to starting point
+    // Stops player to leave canvas
+    if (this.x <= 0) {
+      this.x = 0;
+    }
+    if (this.x > 400) {
+      this.x = 400;
+    }
+    if (this.y <= 0) {
+      this.y = 0;
+    }
+    if (this.y > 400) {
+      this.y = 400;
+    }
+    // Reset positon after delay to starting point
     if (this.y <= 0) {
       setTimeout(() => {
         this.x = 202;
@@ -58,31 +72,29 @@ class Player {
   }
   // Handle player input
   handleInput(keyAction) {
-    // Allow player to move on field to the left without leaving canvas
-    if (keyAction === "left" && this.x > 0) {
-      this.x -= 102;
-    }
-    // Allow player to move on field to the right without leaving canvas
-    if (keyAction === "right" && this.x < 405) {
-      this.x += 102;
-    }
-    // Allow player to move on field up without leaveing the canvas
-    if (keyAction === "up" && this.y > 0) {
-      this.y -= 83;
-    }
-    // Allow player to move on field down without leaving the canvas
-    if (keyAction === "down" && this.y < 405) {
-      this.y += 83;
+    switch (keyAction) {
+      case "left":
+        this.x -= 100;
+        break;
+      case "right":
+        this.x += 100;
+        break;
+      case "up":
+        this.y -= 80;
+        break;
+      case "down":
+        this.y += 80;
     }
   }
 }
 // Set up all enemies in an array
 let allEnemies = [];
 // Set up enemy starting points on y-axis
-const enemyStartPoints = [63, 147, 230];
+const enemyPositionY = [63, 63, 147, 147, 230];
+const enemyPositionX = Math.floor(Math.random() * 298) + 1;
 // Create enemies at starting point and push them to array
-enemyStartPoints.forEach((posY) => {
-  enemy = new Enemy(0, posY, 200);
+enemyPositionY.forEach((positionY) => {
+  enemy = new Enemy(enemyPositionX, positionY, 200);
   allEnemies.push(enemy);
 })
 // Create new player at starting point
